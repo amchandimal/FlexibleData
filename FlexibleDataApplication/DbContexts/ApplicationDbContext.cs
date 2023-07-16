@@ -6,6 +6,7 @@ namespace FlexibleDataApplication.DbContexts
     public class ApplicationDbContext : DbContext
     {
         public DbSet<FlexibleData> FlexibleData { get; set; } = null!;
+        public DbSet<Statistics> Statistics { get; set; } = null !;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

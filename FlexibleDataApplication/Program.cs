@@ -1,6 +1,7 @@
 using FlexibleDataApplication.DbContexts;
 using FlexibleDataApplication.Repositories;
 using FlexibleDataApplication.Services;
+using FlexibleDataApplication.Services.Util;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(dbContextOptions
 
 builder.Services.AddScoped<IFlexibleDataRepository,FlexibleDataRepository>();
 builder.Services.AddScoped<IFlexibleDataService, FlexibleDataService>();
+builder.Services.AddHostedService<BackgroundLongRunningService>();
+builder.Services.AddSingleton<BackgroundWorkerQueue>();
 
 var app = builder.Build();
 
