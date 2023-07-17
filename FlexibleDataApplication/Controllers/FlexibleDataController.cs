@@ -11,10 +11,13 @@ namespace FlexibleDataApplication.Controllers
     public class FlexibleDataController : ControllerBase
     {
         private readonly IFlexibleDataService flexibleDataService;
+        private readonly IStatisticsService statisticsService;
 
-        public FlexibleDataController(IFlexibleDataService flexibleDataService)
+        public FlexibleDataController(IFlexibleDataService flexibleDataService,
+            IStatisticsService statisticsService)
         {
             this.flexibleDataService = flexibleDataService ?? throw new ArgumentNullException(nameof(flexibleDataService));
+            this.statisticsService = statisticsService ?? throw new ArgumentNullException(nameof(statisticsService));
         }
 
         [HttpPost("create")]
@@ -33,7 +36,10 @@ namespace FlexibleDataApplication.Controllers
             }
             //Getting the Created Data
             flexibleData = await flexibleDataService.Save(flexibleData);
-
+            foreach(var kv in dict)
+            {
+               await statisticsService.updateStats(kv.Key);
+            }
             return Ok(flexibleData);
         }
 

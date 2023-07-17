@@ -1,5 +1,6 @@
 ﻿using FlexibleDataApplication.Entities;
 using FlexibleDataApplication.Repositories;
+using FlexibleDataApplication.Services.Util;
 using System.Text.Json;
 
 namespace FlexibleDataApplication.Services
@@ -8,17 +9,20 @@ namespace FlexibleDataApplication.Services
     {
         private readonly IFlexibleDataRepository flexibleDataRepository;
         private readonly IStatisticsDataRepository statisticsDataRepository;
+        private readonly BackgroundWorkerQueue backgroundWorkerQueue;
 
         public StatisticsService(IFlexibleDataRepository flexibleDataRepository
-            , IStatisticsDataRepository statisticsDataRepository)
+            , IStatisticsDataRepository statisticsDataRepository, 
+            BackgroundWorkerQueue backgroundWorkerQueue)
         {
             this.flexibleDataRepository = flexibleDataRepository ?? throw new ArgumentNullException(nameof(flexibleDataRepository));
             this.statisticsDataRepository = statisticsDataRepository ?? throw new ArgumentNullException(nameof(statisticsDataRepository));
+            this.backgroundWorkerQueue = backgroundWorkerQueue ?? throw new ArgumentNullException(nameof(backgroundWorkerQueue));
         }
 
-        public async Task<Statistics> FindById(int id)
+        public async Task<Statistics> FindById(string key)
         {
-            return await statisticsDataRepository.FindByIdAsync(id);
+            return await statisticsDataRepository.FindByIdAsync(key);
         }
 
         public async Task<ICollection<Statistics>> GetAll()
@@ -26,7 +30,7 @@ namespace FlexibleDataApplication.Services
             return await statisticsDataRepository.GetAllAsync();
         }
 
-        public async void updateStatistics(string key)
+        public async Task updateStatistics(string key)
         {
             //Updating Key Count
             int KeyCount = 0;
@@ -48,6 +52,15 @@ namespace FlexibleDataApplication.Services
             await statisticsDataRepository.UpdateStatistics(statistics);
         }
 
+        public async Task updateStats(string key)
+        {
 
+            await updateStatistics(key);
+
+            //backgroundWorkerQueue.QueueBackgroundWorkItem(async token =>
+            //{
+               
+            //});
+        }
     }
 }

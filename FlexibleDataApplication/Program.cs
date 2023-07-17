@@ -20,6 +20,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(dbContextOptions
 
 builder.Services.AddScoped<IFlexibleDataRepository,FlexibleDataRepository>();
 builder.Services.AddScoped<IFlexibleDataService, FlexibleDataService>();
+builder.Services.AddScoped<IStatisticsDataRepository, StatisticsDataRepository>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddHostedService<BackgroundLongRunningService>();
 builder.Services.AddSingleton<BackgroundWorkerQueue>();
 
