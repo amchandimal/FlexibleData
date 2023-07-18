@@ -11,10 +11,10 @@ namespace FlexibleDataApplication.Controllers
     public class FlexibleDataController : ControllerBase
     {
         private readonly IFlexibleDataService flexibleDataService;
-        private readonly IStatisticsService statisticsService;
+        private readonly IStatisticsBackgroundService statisticsService;
 
         public FlexibleDataController(IFlexibleDataService flexibleDataService,
-            IStatisticsService statisticsService)
+            IStatisticsBackgroundService statisticsService)
         {
             this.flexibleDataService = flexibleDataService ?? throw new ArgumentNullException(nameof(flexibleDataService));
             this.statisticsService = statisticsService ?? throw new ArgumentNullException(nameof(statisticsService));

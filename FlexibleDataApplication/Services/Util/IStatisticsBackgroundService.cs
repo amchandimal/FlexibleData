@@ -3,9 +3,8 @@ using FlexibleDataApplication.Services.Util;
 
 namespace FlexibleDataApplication.Services
 {
-    public interface IStatisticsService
+    public interface IStatisticsBackgroundService
     {
-        Task<Statistics> FindById(string key);
-        Task<ICollection<Statistics>> GetAll();
+           Task updateStats(string key);
     }
 }

@@ -31,7 +31,14 @@ namespace FlexibleDataApplication.Repositories
 
         public async Task<Statistics> UpdateStatistics(Statistics data)
         {
-            context.Statistics.Add(data);
+            if(context.Statistics.Any(e=> e.Key == data.Key))
+            {
+                context.Statistics.Update(data);
+            }
+            else
+            {
+                context.Statistics.Add(data);
+            }
             await context.SaveChangesAsync();
             return data;
         }

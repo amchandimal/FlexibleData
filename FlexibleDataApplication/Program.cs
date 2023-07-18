@@ -16,11 +16,12 @@ builder.Services.AddSwaggerGen();
 //Adding DbContext
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 builder.Services.AddDbContext<ApplicationDbContext>(dbContextOptions
-    => dbContextOptions.UseSqlServer(connectionString));
+    => dbContextOptions.UseSqlServer(connectionString),ServiceLifetime.Transient);
 
 builder.Services.AddScoped<IFlexibleDataRepository,FlexibleDataRepository>();
 builder.Services.AddScoped<IFlexibleDataService, FlexibleDataService>();
 builder.Services.AddScoped<IStatisticsDataRepository, StatisticsDataRepository>();
+builder.Services.AddSingleton<IStatisticsBackgroundService, StatisticsBackgroundService>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddHostedService<BackgroundLongRunningService>();
 builder.Services.AddSingleton<BackgroundWorkerQueue>();
