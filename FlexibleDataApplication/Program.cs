@@ -2,6 +2,7 @@ using FlexibleDataApplication.DbContexts;
 using FlexibleDataApplication.Repositories;
 using FlexibleDataApplication.Services;
 using FlexibleDataApplication.Services.Util;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +28,7 @@ builder.Services.AddHostedService<BackgroundLongRunningService>();
 builder.Services.AddSingleton<BackgroundWorkerQueue>();
 
 var app = builder.Build();
-
+app.UseMiddleware<CustomErrorHandlingMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
