@@ -1,6 +1,7 @@
 using FlexibleDataApplication.DbContexts;
 using FlexibleDataApplication.Repositories;
 using FlexibleDataApplication.Services;
+using FlexibleDataApplication.Services.DBUtil;
 using FlexibleDataApplication.Services.Util;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -28,13 +29,24 @@ builder.Services.AddHostedService<BackgroundLongRunningService>();
 builder.Services.AddSingleton<BackgroundWorkerQueue>();
 
 var app = builder.Build();
+
+//Migrate DB
+DatabaseManagementService.MigrationInitialisation(app);
+
 app.UseMiddleware<CustomErrorHandlingMiddleware>();
 // Configure the HTTP request pipeline.
+
+// Added this to work with Docker Compose
+
+app.UseCors(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+app.UseSwagger();
+app.UseSwaggerUI();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseCors(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    //app.UseCors(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+    //app.UseSwagger();
+    //app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
