@@ -40,7 +40,7 @@ namespace FlexibleDataApplication.Repositories
                 .Where(data => data.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<FlexibleData>> GetAllAsync()
+        public async Task<List<FlexibleData>> GetAllAsync()
         {
             return await context.FlexibleData.ToListAsync();
         }

@@ -19,7 +19,7 @@ namespace FlexibleDataApplication.Repositories
                .Where(data => data.Key == key).FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Statistics>> GetAllAsync()
+        public async Task<List<Statistics>> GetAllAsync()
         {
             return await context.Statistics.ToListAsync();
         }

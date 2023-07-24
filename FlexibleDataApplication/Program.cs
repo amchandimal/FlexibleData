@@ -5,6 +5,7 @@ using FlexibleDataApplication.Services.DBUtil;
 using FlexibleDataApplication.Services.Util;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +22,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(dbContextOptions
     => dbContextOptions.UseSqlServer(connectionString),ServiceLifetime.Transient);
 
 builder.Services.AddScoped<IFlexibleDataRepository,FlexibleDataRepository>();
-builder.Services.AddScoped<IFlexibleDataService, FlexibleDataService>();
 builder.Services.AddScoped<IStatisticsDataRepository, StatisticsDataRepository>();
 builder.Services.AddSingleton<IStatisticsBackgroundService, StatisticsBackgroundService>();
-builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
 builder.Services.AddHostedService<BackgroundLongRunningService>();
 builder.Services.AddSingleton<BackgroundWorkerQueue>();
 
