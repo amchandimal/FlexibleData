@@ -1,4 +1,4 @@
-n # FlexibleData
+# FlexibleData
 FlexibleDataApplication
 
 ## Solution
