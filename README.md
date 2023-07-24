@@ -53,6 +53,8 @@ If you build the image on your own, change the following segment in the docker-c
 2. Right Click the Collection & Click Run Collection
 3. Make sure the Run Order is As below
 
+![Sshot](https://github.com/amchandimal/FlexibleData/assets/20762013/cf818e5f-6220-4b43-9883-bbfc1984a7a5)
+
 
 Click Run Button.
 
