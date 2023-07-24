@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "5702ea86-b2da-49c6-a76a-89f7b27a5dff",
+		"name": "FlexibleData",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7590259"
+	},
+	"item": [
+		{
+			"name": "CreateFlexibleData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test-Create\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Create\", function () {\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    var data = jsonData[\"data\"];\r",
+							"    pm.expect(data).to.eql(\"{\\\"\"+pm.variables.get(\"key\")+\"\\\":\\\"\"+pm.variables.get(\"value\")+\"\\\"}\");\r",
+							"    pm.collectionVariables.set(\"flexibleDataId\", jsonData[\"id\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid');\r",
+							"\r",
+							"let keyString = uuid.v4();\r",
+							"let value = uuid.v4();\r",
+							"\r",
+							"let body = {};\r",
+							"body[keyString] = value;\r",
+							"\r",
+							"pm.collectionVariables.set('key', keyString);\r",
+							"pm.collectionVariables.set('value',value);\r",
+							"pm.variables.set('body', JSON.stringify(body));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{body}}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/flexibledata/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"flexibledata",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetFlexibleDataById",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test-Get by Id\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Get by Id\", function () {\r",
+							"    pm.expect(responseBody).to.eql(\"{\\\"\"+pm.collectionVariables.get(\"key\")+\"\\\":\\\"\"+pm.collectionVariables.get(\"value\")+\"\\\"}\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/flexibledata/get/{{flexibleDataId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"flexibledata",
+						"get",
+						"{{flexibleDataId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllFlexibleData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test-Get All Flexible Data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Is New Key Contains in All Flexible Data\", function () {\r",
+							"    pm.expect(responseBody).to.contains(pm.collectionVariables.get(\"key\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Is New Value Contains in All Flexible Data\", function () {\r",
+							"    pm.expect(responseBody).to.contains(pm.collectionVariables.get(\"value\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/flexibledata/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"flexibledata",
+						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateFlexibleDataDuplicateKeyValue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test-Create\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Create\", function () {\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    var data = jsonData[\"data\"];\r",
+							"    pm.expect(data).to.eql(\"{\\\"\"+pm.collectionVariables.get(\"key\")+\"\\\":\\\"\"+pm.collectionVariables.get(\"value\")+\"\\\"}\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let body = {};\r",
+							"body[pm.collectionVariables.get('key')] = pm.collectionVariables.get('value');\r",
+							"pm.variables.set('body', JSON.stringify(body));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{body}}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/flexibledata/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"flexibledata",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateFlexibleDataDuplicateKeyUniqueValue",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test-Create\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Create\", function () {\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    var data = jsonData[\"data\"];\r",
+							"    pm.expect(data).to.eql(\"{\\\"\"+pm.collectionVariables.get(\"key\")+\"\\\":\\\"\"+pm.collectionVariables.get(\"value\")+\"\\\"}\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var uuid = require('uuid');\r",
+							"let value = uuid.v4();\r",
+							"pm.collectionVariables.set('value',value);\r",
+							"\r",
+							"let body = {};\r",
+							"body[pm.collectionVariables.get('key')] = value;\r",
+							"pm.variables.set('body', JSON.stringify(body));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{body}}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/flexibledata/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"flexibledata",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetFlexibleCountById",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test-Get Count by Key\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Get Count By Key\", function () {\r",
+							"    let jsonData = JSON.parse(responseBody);\r",
+							"    console.log(jsonData);\r",
+							"    pm.expect(jsonData[\"key\"]).to.eql(pm.collectionVariables.get(\"key\"));\r",
+							"    pm.expect(jsonData[\"count\"]).to.eql(3);\r",
+							"    pm.expect(jsonData[\"uniqueCount\"]).to.eql(2);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/flexibledata/count/{{key}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"flexibledata",
+						"count",
+						"{{key}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllFlexibleCount",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test-Get All Flexible Data\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Is New Key Contains in All Flexible Data\", function () {\r",
+							"    pm.expect(responseBody).to.contains(pm.collectionVariables.get(\"key\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response test-Is New Value Contains in All Flexible Data\", function () {\r",
+							"    pm.expect(responseBody).to.contains(pm.collectionVariables.get(\"value\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/flexibledata/get",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"flexibledata",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "key",
+			"value": ""
+		},
+		{
+			"key": "value",
+			"value": ""
+		},
+		{
+			"key": "flexibleDataId",
+			"value": ""
+		}
+	]
+}

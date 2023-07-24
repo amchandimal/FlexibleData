@@ -10,7 +10,7 @@ services:
     ports:
       - '1433:1433'
   flexibledata-core:
-    image: flexibledata:0.03
+    image: chandimal/flexibledata:0.1
     ports:
       - '8081:80'
     env_file:
