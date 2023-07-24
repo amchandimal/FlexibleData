@@ -36,18 +36,15 @@ namespace FlexibleDataApplication.Controllers
             }
             //Getting the Created Data
             flexibleData = await flexibleDataService.Save(flexibleData);
-            foreach(var kv in dict)
-            {
-               await statisticsService.updateStats(kv.Key);
-            }
+            statisticsService.UpdateStats(dict);
             return Ok(flexibleData);
         }
 
         [HttpGet("get/{id?}")]
-        public async Task<IActionResult> getFlexibleData(int id)
+        public async Task<IActionResult> getFlexibleData(int? id)
         {
 
-            if(id == 0)
+            if(!id.HasValue)
             {
                 //Getting All felxible Data
                 var flexibleData = (await flexibleDataService.GetAll())
@@ -58,7 +55,7 @@ namespace FlexibleDataApplication.Controllers
             else
             {
                 //Getting felxible Data
-                var flexibleData = await flexibleDataService.FindById(id);
+                var flexibleData = await flexibleDataService.FindById(id.Value);
                 if (flexibleData == null)
                 {
                     return NotFound();
