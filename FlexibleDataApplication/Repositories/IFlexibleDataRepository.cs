@@ -6,7 +6,7 @@ namespace FlexibleDataApplication.Repositories
     {
         Task<FlexibleData> FindByIdAsync(int id);
         Task<bool> DeleteByIdAsync(int id);
-        Task<ICollection<FlexibleData>> GetAllAsync();
+        Task<List<FlexibleData>> GetAllAsync();
         Task<FlexibleData> AddFlexibleDataAsync(FlexibleData data);
         Task<int> SaveChangesAsync();
     }

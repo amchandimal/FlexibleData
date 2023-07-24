@@ -1,4 +1,6 @@
-﻿using FlexibleDataApplication.Services;
+﻿using FlexibleDataApplication.Queries;
+using FlexibleDataApplication.Services;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlexibleDataApplication.Controllers
@@ -7,11 +9,11 @@ namespace FlexibleDataApplication.Controllers
     [Route("flexibledata/count")]
     public class FlexibleStatsController : ControllerBase
     {
-        private readonly IStatisticsService statisticsService;
+        private readonly IMediator mediator;
 
-        public FlexibleStatsController(IStatisticsService statisticsService)
+        public FlexibleStatsController(IMediator mediator)
         {
-            this.statisticsService = statisticsService ?? throw new ArgumentNullException(nameof(statisticsService));
+            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
             [HttpGet("{key?}")]
@@ -19,14 +21,13 @@ namespace FlexibleDataApplication.Controllers
 
                 if (key == "")
                 {
-                    //Getting All felxible Stats
-                    var flexibleStats = await statisticsService.GetAll();
-                    return Ok(flexibleStats);
+                //Getting All felxible Stats
+                    return Ok(await mediator.Send(new GetStatsListQuery()));
                 }
                 else
                 {
                     //Getting felxible Data
-                    var flexibleStats = await statisticsService.FindById(key);
+                    var flexibleStats = await mediator.Send(new GetStatsByIDQuery(key));
                     if (flexibleStats == null)
                     {
                         return NotFound();
